@@ -29,6 +29,16 @@ const mockNews = [
     author: "638c7ab09697e7ea8b97edba",
     id: "638c92a99697e7ea8b97edd5",
   },
+  {
+    title: "not to appear in news as is archived",
+    description: "this description should appear last",
+    storageDate: "1992-01-31T23:00:00.000Z",
+    content: "This is the content of the last new to appear",
+    archived: true,
+    archiveDate: "1992-01-31T23:00:00.000Z",
+    author: "638c7ab09697e7ea8b97edba",
+    id: "638c92a99697e7ea8b97edd5",
+  },
 ];
 
 module.exports = { mockNews };
