@@ -4,6 +4,7 @@ const AuthorSchema = new Schema({
   authorName: {
     type: String,
     required: true,
+    default: "Unknown",
     unique: true,
   },
 });
