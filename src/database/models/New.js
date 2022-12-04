@@ -11,14 +11,13 @@ const NewSchema = new Schema({
     required: true,
   },
 
-  date: {
+  storageDate: {
     type: Date,
     required: true,
   },
 
   content: {
-    type: Object,
-    default: {},
+    type: String,
     required: true,
   },
 
