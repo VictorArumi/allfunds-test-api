@@ -35,5 +35,15 @@
     "mongoose": "^6.7.5",
     "morgan": "^1.10.0",
     "supertest": "^6.3.2"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/index.js",
+      "!src/server/initializeServer.js",
+      "!src/server/index.js",
+      "!src/database/index.js",
+      "!.eslintrc.js"
+    ]
   }
 }
