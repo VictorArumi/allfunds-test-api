@@ -2,7 +2,6 @@ require("dotenv").config();
 const debug = require("debug")("news-api:server:booking-controllers");
 const chalk = require("chalk");
 const Author = require("../../database/models/Author");
-
 const New = require("../../database/models/New");
 
 const getNews = async (req, res, next) => {
@@ -18,6 +17,26 @@ const getNews = async (req, res, next) => {
   }
 };
 
+const setNewToArchived = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const updatedNew = await New.findByIdAndUpdate(
+      id,
+      { $set: { archived: true, archiveDate: Date.now() } },
+      {
+        new: true,
+      }
+    );
+    res.status(200).json({ updatedNew });
+  } catch (error) {
+    error.statusCode = 404;
+    error.customMessage =
+      "Error: new id does not exist in DB, impossible to update";
+    next(error);
+  }
+};
+
 module.exports = {
   getNews,
+  setNewToArchived,
 };

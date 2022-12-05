@@ -5,7 +5,6 @@ const mockNews = [
     storageDate: "2001-01-31T23:00:00.000Z",
     content: "This is the content of the second new to appear",
     archived: false,
-    archiveDate: "2001-01-31T23:00:00.000Z",
     author: "638c7ab09697e7ea8b97edba",
     id: "638c7f589697e7ea8b97edc7",
   },
