@@ -30,8 +30,8 @@ describe("Given a GET /news enpoint", () => {
       await New.create(mockNews[2]);
 
       const sortedNonArchivedNews = mockNews
-        .sort((a, b) => new Date(b.storageDate) - new Date(a.storageDate))
-        .filter((_new) => !_new.archived);
+        .filter((_new) => !_new.archived)
+        .sort((a, b) => new Date(b.storageDate) - new Date(a.storageDate));
 
       const {
         body: { news },
@@ -42,6 +42,34 @@ describe("Given a GET /news enpoint", () => {
       expect(news[0].storageDate).toBe(sortedNonArchivedNews[0].storageDate);
       expect(news[1].description).toBe(sortedNonArchivedNews[1].description);
       expect(news[1].storageDate).toBe(sortedNonArchivedNews[1].storageDate);
+    });
+  });
+});
+
+describe("Given a GET /news/archived enpoint", () => {
+  describe("When it receives a valid request", () => {
+    test("Then it should return status 200 and the database list of news with archived true value, sorted by storage date", async () => {
+      await New.create(mockNews[0]);
+      await New.create(mockNews[1]);
+      await New.create(mockNews[2]);
+      await New.create(mockNews[3]);
+
+      const sortedArchivedNews = mockNews
+        .filter((_new) => _new.archived)
+        .sort((a, b) => new Date(b.storageDate) - new Date(a.storageDate));
+
+      const {
+        body: { archivedNews },
+      } = await request(app).get("/news/archived").expect(200);
+
+      expect(archivedNews).toHaveLength(sortedArchivedNews.length);
+      expect(archivedNews[0].title).toBe(sortedArchivedNews[0].title);
+      expect(archivedNews[0].storageDate).toBe(
+        sortedArchivedNews[0].storageDate
+      );
+      expect(archivedNews[0].description).toBe(
+        sortedArchivedNews[0].description
+      );
     });
   });
 });
