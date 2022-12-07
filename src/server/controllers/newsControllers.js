@@ -20,7 +20,7 @@ const getNews = async (req, res, next) => {
 const getArchived = async (req, res, next) => {
   try {
     const archivedNews = await New.find({ archived: true })
-      .sort({ storageDate: -1 })
+      .sort({ archiveDate: -1 })
       .populate("author", null, Author);
 
     res.status(200).json({ archivedNews });

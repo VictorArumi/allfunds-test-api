@@ -24,7 +24,6 @@ const mockNews = [
     storageDate: "1992-01-31T23:00:00.000Z",
     content: "This is the content of the last new to appear",
     archived: false,
-    archiveDate: "1992-01-31T23:00:00.000Z",
     author: "638c7ab09697e7ea8b97edba",
     id: "638c92a99697e7ea8b97edd5",
   },
