@@ -56,7 +56,7 @@ describe("Given a GET /news/archived enpoint", () => {
 
       const sortedArchivedNews = mockNews
         .filter((_new) => _new.archived)
-        .sort((a, b) => new Date(b.storageDate) - new Date(a.storageDate));
+        .sort((a, b) => new Date(b.archiveDate) - new Date(a.archiveDate));
 
       const {
         body: { archivedNews },
