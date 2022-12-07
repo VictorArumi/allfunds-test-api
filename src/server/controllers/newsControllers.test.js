@@ -1,6 +1,6 @@
 const { mockNews } = require("../../database/mocks/mockNews");
 const New = require("../../database/models/New");
-const { getNews, setNewToArchived } = require("./newsControllers");
+const { getNews, setNewToArchived, getArchived } = require("./newsControllers");
 
 const res = {
   status: jest.fn().mockReturnThis(),
@@ -27,6 +27,8 @@ describe("given a getNews function", () => {
       const expectedStatusCode = 200;
       const req = {};
 
+      New.find.mockReturnThis();
+
       await getNews(req, res, null);
 
       expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
@@ -44,6 +46,37 @@ describe("given a getNews function", () => {
       });
 
       await getNews(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+});
+
+describe("given a getArchived function", () => {
+  describe("When its invoked with a request", () => {
+    test("Then it should call the response's methods status with '200' and json with a list of news", async () => {
+      const expectedStatusCode = 200;
+      const req = {};
+
+      New.find.mockReturnThis();
+
+      await getArchived(req, res, null);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
+      expect(res.json).toHaveBeenCalledWith({ archivedNews: mockNews });
+    });
+  });
+
+  describe("When its invoked and an error ocurs", () => {
+    test("Then it should call the next with the error", async () => {
+      const req = {};
+      const expectedError = new Error();
+
+      New.find.mockImplementation(() => {
+        throw new Error();
+      });
+
+      await getArchived(req, res, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });

@@ -13,7 +13,7 @@ const mockNews = [
     description: "this description should appear first",
     storageDate: "2022-01-31T23:00:00.000Z",
     content: "This is the content of the first new to appear",
-    archived: false,
+    archived: true,
     archiveDate: "2022-01-31T23:00:00.000Z",
     author: "638c7ab09697e7ea8b97edba",
     id: "638c88209697e7ea8b97edd0",
