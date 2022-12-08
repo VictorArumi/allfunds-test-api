@@ -63,6 +63,7 @@ const deleteNew = async (req, res, next) => {
     }
 
     res.status(200).json({ msg: `New with id ${id} has been deleted` });
+    debug(chalk.green(`Deleted new: ${id} `));
   } catch (error) {
     error.statusCode = 400;
     error.customMessage = "Bad request";

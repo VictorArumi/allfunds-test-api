@@ -111,3 +111,32 @@ describe("Given a PUT /news/edit/:id enpoint", () => {
     });
   });
 });
+
+describe("Given a DELETE /news/archived/:id enpoint", () => {
+  describe("When it receives a request with an existing new id", () => {
+    test("Then it should return status 200 and json with msg: 'New with id 638c88209697e7ea8b97edd0 has been deleted'", async () => {
+      const { id: idToDelete } = await New.create(mockNews[1]);
+      const expectedMsg = `New with id ${idToDelete} has been deleted`;
+
+      const {
+        body: { msg },
+      } = await request(app).delete(`/news/archived/${idToDelete}`).expect(200);
+
+      expect(msg).toBe(expectedMsg);
+    });
+  });
+
+  describe("When it receives a request with unexistent params id: 'non-existent'", () => {
+    test("Then it should return a message 'Couldn't delete: new id does not exist'", async () => {
+      const idToDelete = "non-existent";
+      const expectedMsg = "Couldn't delete: new id does not exist";
+      await New.create(mockNews[1]);
+
+      const {
+        body: { msg },
+      } = await request(app).delete(`/news/archived/${idToDelete}`).expect(404);
+
+      expect(msg).toBe(expectedMsg);
+    });
+  });
+});
