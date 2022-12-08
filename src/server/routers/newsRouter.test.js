@@ -28,6 +28,8 @@ describe("Given a GET /news enpoint", () => {
       await New.create(mockNews[0]);
       await New.create(mockNews[1]);
       await New.create(mockNews[2]);
+      await New.create(mockNews[3]);
+      await New.create(mockNews[4]);
 
       const sortedNonArchivedNews = mockNews
         .filter((_new) => !_new.archived)
@@ -39,6 +41,8 @@ describe("Given a GET /news enpoint", () => {
 
       expect(news).toHaveLength(sortedNonArchivedNews.length);
       expect(news[0].title).toBe(sortedNonArchivedNews[0].title);
+      expect(news[1].title).toBe(sortedNonArchivedNews[1].title);
+      expect(news[2].title).toBe(sortedNonArchivedNews[2].title);
       expect(news[0].storageDate).toBe(sortedNonArchivedNews[0].storageDate);
       expect(news[1].description).toBe(sortedNonArchivedNews[1].description);
       expect(news[1].storageDate).toBe(sortedNonArchivedNews[1].storageDate);

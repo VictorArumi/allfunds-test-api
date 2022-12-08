@@ -9,7 +9,7 @@ const mockNews = [
     id: "638c7f589697e7ea8b97edc7",
   },
   {
-    title: "First in date",
+    title: "First archived in date",
     description: "this description should appear first",
     storageDate: "2022-01-31T23:00:00.000Z",
     content: "This is the content of the first new to appear",
@@ -37,6 +37,23 @@ const mockNews = [
     author: "638c7ab09697e7ea8b97edba",
     id: "638c92a99697e7ea8b97edd5",
   },
+  {
+    title: "First New",
+    description: "this description should appear second",
+    storageDate: "2022-05-31T23:00:00.000Z",
+    content: "This is the content of the second new to appear",
+    archived: false,
+    author: "638c7ab09697e7ea8b97edba",
+    id: "638c7f589697e7ea8b97edc7",
+  },
 ];
 
-module.exports = { mockNews };
+const mockCreateNewBody = {
+  title: "not to appear in news as is archived",
+  description: "this description should appear last",
+  storageDate: "2022-12-08T08:19:58.866Z",
+  content: "This is the content of the last new to appear",
+  author: "638c7ab09697e7ea8b97edba",
+};
+
+module.exports = { mockNews, mockCreateNewBody };

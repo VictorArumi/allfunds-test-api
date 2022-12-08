@@ -36,8 +36,6 @@ const NewSchema = new Schema({
   archiveDate: {
     type: Date,
   },
-
-  // title, description, date, content, author, archiveDate.
 });
 
 const New = model("New", NewSchema, "news");
