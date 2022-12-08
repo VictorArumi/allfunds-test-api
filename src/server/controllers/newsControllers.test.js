@@ -1,6 +1,11 @@
 const { mockNews } = require("../../database/mocks/mockNews");
 const New = require("../../database/models/New");
-const { getNews, setNewToArchived, getArchived } = require("./newsControllers");
+const {
+  getNews,
+  setNewToArchived,
+  getArchivedNews,
+  deleteNew,
+} = require("./newsControllers");
 
 const res = {
   status: jest.fn().mockReturnThis(),
@@ -60,7 +65,7 @@ describe("given a getArchived function", () => {
 
       New.find.mockReturnThis();
 
-      await getArchived(req, res, null);
+      await getArchivedNews(req, res, null);
 
       expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
       expect(res.json).toHaveBeenCalledWith({ archivedNews: mockNews });
@@ -76,7 +81,7 @@ describe("given a getArchived function", () => {
         throw new Error();
       });
 
-      await getArchived(req, res, next);
+      await getArchivedNews(req, res, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
     });
@@ -117,6 +122,55 @@ describe("given a setNewToArchived function", () => {
       await setNewToArchived(req, res, next);
 
       expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+});
+
+describe("Given a deleteNew function", () => {
+  describe("When it's invoked with params id: newId", () => {
+    test("Then it should call the response's method status with a 200, and json with msg: 'New with id newId has been deleted'", async () => {
+      const idToDelete = "newId";
+      const expectedJson = {
+        msg: `New with id ${idToDelete} has been deleted`,
+      };
+      const req = {
+        params: { id: idToDelete },
+      };
+      const expectedStatusCode = 200;
+      New.findByIdAndDelete = jest.fn().mockResolvedValue(true);
+
+      await deleteNew(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
+      expect(res.json).toHaveBeenCalledWith(expectedJson);
+    });
+  });
+
+  describe("When it's invoked with an id that doesn't exist", () => {
+    test("Then it should call next with an error", async () => {
+      const idTodelete = "non existent id";
+
+      const req = {
+        params: { id: idTodelete },
+      };
+
+      const expectedError = new Error();
+
+      New.findByIdAndDelete = jest.fn().mockResolvedValue(null);
+
+      await deleteNew(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+
+  describe("When it's invoked with no id", () => {
+    test("Then it should call next", async () => {
+      const req = {};
+
+      await deleteNew(req, null, next);
+
+      expect(next).toHaveBeenCalled();
     });
   });
 });
