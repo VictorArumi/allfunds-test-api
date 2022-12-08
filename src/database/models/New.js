@@ -4,11 +4,13 @@ const NewSchema = new Schema({
   title: {
     type: String,
     required: true,
+    default: "(empty)",
   },
 
   description: {
     type: String,
     required: true,
+    default: "(empty)",
   },
 
   storageDate: {
@@ -19,12 +21,14 @@ const NewSchema = new Schema({
   content: {
     type: String,
     required: true,
+    default: "(empty)",
   },
 
   author: {
     type: Schema.Types.ObjectId,
     ref: "Author",
     required: true,
+    default: "639277516361cd4071a3346b",
   },
 
   archived: {
