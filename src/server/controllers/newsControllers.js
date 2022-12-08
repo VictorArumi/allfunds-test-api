@@ -71,9 +71,31 @@ const deleteNew = async (req, res, next) => {
   }
 };
 
+const createNew = async (req, res, next) => {
+  debug(req.body);
+  try {
+    const newData = req.body;
+
+    const createdNew = await New.create({
+      ...newData,
+      storageDate: Date.now(),
+    });
+
+    debug(chalk.red(createdNew));
+
+    res.status(201).json({ createdNew });
+    debug(chalk.green(`Created new with id ${createdNew.id}`));
+  } catch (error) {
+    error.statusCode = 400;
+    error.customMessage = "Bad request";
+    next(error);
+  }
+};
+
 module.exports = {
   getNews,
   getArchivedNews,
   setNewToArchived,
   deleteNew,
+  createNew,
 };

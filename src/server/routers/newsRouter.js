@@ -4,6 +4,7 @@ const {
   setNewToArchived,
   getArchivedNews,
   deleteNew,
+  createNew,
 } = require("../controllers/newsControllers");
 
 const newsRouter = express.Router();
@@ -11,6 +12,7 @@ const newsRouter = express.Router();
 newsRouter.get("/", getNews);
 newsRouter.get("/archived", getArchivedNews);
 newsRouter.delete("/archived/:id", deleteNew);
+newsRouter.post("/create", createNew);
 newsRouter.put("/edit/:id", setNewToArchived);
 
 module.exports = newsRouter;

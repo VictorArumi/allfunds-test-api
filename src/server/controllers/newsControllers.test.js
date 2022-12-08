@@ -1,10 +1,14 @@
-const { mockNews } = require("../../database/mocks/mockNews");
+const {
+  mockNews,
+  mockCreateNewBody,
+} = require("../../database/mocks/mockNews");
 const New = require("../../database/models/New");
 const {
   getNews,
   setNewToArchived,
   getArchivedNews,
   deleteNew,
+  createNew,
 } = require("./newsControllers");
 
 const res = {
@@ -171,6 +175,41 @@ describe("Given a deleteNew function", () => {
       await deleteNew(req, null, next);
 
       expect(next).toHaveBeenCalled();
+    });
+  });
+});
+
+describe("Given a createNew function", () => {
+  describe("When it's called with a request with valid new object", () => {
+    test("Then it should call the response's method status with a 201, and json method with object with the created new", async () => {
+      const req = {
+        body: mockCreateNewBody,
+      };
+      const mockId = "thisIsAMockId";
+      const expectedJson = {
+        createdNew: { ...mockCreateNewBody, id: mockId },
+      };
+      const expectedStatus = 201;
+
+      New.create = jest
+        .fn()
+        .mockResolvedValue({ ...mockCreateNewBody, id: mockId });
+      await createNew(req, res, null);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+      expect(res.json).toHaveBeenCalledWith(expectedJson);
+    });
+  });
+
+  describe("When it's called with a request with invalid new object", () => {
+    test("Then it should call next with an error", async () => {
+      const req = {};
+
+      const expectedError = new Error();
+      New.create = jest.fn().mockRejectedValue(expectedError);
+      await createNew(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
     });
   });
 });
