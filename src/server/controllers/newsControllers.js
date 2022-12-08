@@ -17,7 +17,7 @@ const getNews = async (req, res, next) => {
   }
 };
 
-const getArchived = async (req, res, next) => {
+const getArchivedNews = async (req, res, next) => {
   try {
     const archivedNews = await New.find({ archived: true })
       .sort({ archiveDate: -1 })
@@ -49,8 +49,30 @@ const setNewToArchived = async (req, res, next) => {
   }
 };
 
+const deleteNew = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const newToDelete = await New.findByIdAndDelete(id);
+
+    if (newToDelete === null) {
+      const error = new Error();
+      error.statusCode = 404;
+      error.customMessage = "Couldn't delete: new id does not exist";
+      next(error);
+      return;
+    }
+
+    res.status(200).json({ msg: `New with id ${id} has been deleted` });
+  } catch (error) {
+    error.statusCode = 400;
+    error.customMessage = "Bad request";
+    next(error);
+  }
+};
+
 module.exports = {
   getNews,
-  getArchived,
+  getArchivedNews,
   setNewToArchived,
+  deleteNew,
 };
