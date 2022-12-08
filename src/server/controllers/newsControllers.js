@@ -72,7 +72,6 @@ const deleteNew = async (req, res, next) => {
 };
 
 const createNew = async (req, res, next) => {
-  debug(req.body);
   try {
     const newData = req.body;
 
