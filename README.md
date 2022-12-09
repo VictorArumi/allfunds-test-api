@@ -80,49 +80,16 @@ All the data is stored in MongoDB. The database allfundsnews has 2 collections: 
 </div>
 
 <div align="center">
+<br/>
 
 ---
 
-## Screenshots
-
-</div>
-<div align="center">
-
-<img style="height:300px" src="https://media.giphy.com/media/FJCDDcTO1vpoXiRQ5Z/giphy.gif" />
+## [API Url](https://news-api-allfunds.onrender.com/) 🔗
 
 </div>
 
 ---
 
-<br/>
-
-<div align="center">
-<br/>
-
-## [Live website](https://news-app-front.netlify.app) 🔗
-
-(wait a moment... until the API wakes up!)
-<br/>
-
-</div>
-
-## Project info📚
-
-**Technologies used:**
-
-```
-- Javascript
-- React
-- Redux
-- Styled-components
-- Jest
-```
-
-<br/>
-
----
-
-<br/>
 <br/>
 
 ## Commands
@@ -132,13 +99,10 @@ All the data is stored in MongoDB. The database allfundsnews has 2 collections: 
     npm i or npm/yarn i
 
     # Running command
-    npm start
-
-    # Build command
-    npm run build
+    npm start or npm start-dev (for dev mode)
 
     # Testing command
-    npm run test
+    npm test
 ```
 
 <br/>
