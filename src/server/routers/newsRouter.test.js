@@ -220,6 +220,8 @@ describe("Given a POST /news/create endpoint", () => {
 
   describe("When it receives a request with a author value that is not objectId", () => {
     test("Then it should respond with 400 status code", async () => {
+      const expectedErrorMessage = "Bad request";
+
       const newToCreateData = {
         title: mockNews[0].title,
         description: mockNews[0].description,
@@ -227,7 +229,36 @@ describe("Given a POST /news/create endpoint", () => {
         author: "not a object id",
       };
 
-      await request(app).post("/news/create").send(newToCreateData).expect(400);
+      const {
+        body: { msg },
+      } = await request(app)
+        .post("/news/create")
+        .send(newToCreateData)
+        .expect(400);
+
+      expect(msg).toBe(expectedErrorMessage);
+    });
+  });
+
+  describe("When it receives a request with values that differ from validation schema", () => {
+    test("Then it should respond with 400 status code", async () => {
+      const expectedErrorMessage = "Bad Request: Form validation failed";
+
+      const newToCreateData = {
+        title: { title: "wrong" },
+        description: mockNews[0].description,
+        content: mockNews[0].content,
+        author: "not a object id",
+      };
+
+      const {
+        body: { msg },
+      } = await request(app)
+        .post("/news/create")
+        .send(newToCreateData)
+        .expect(400);
+
+      expect(msg).toBe(expectedErrorMessage);
     });
   });
 });
