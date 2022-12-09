@@ -5,6 +5,7 @@ const connectDB = require("../../database");
 const app = require("..");
 const New = require("../../database/models/New");
 const { mockNews } = require("../../database/mocks/mockNews");
+const Author = require("../../database/models/Author");
 
 let mongoServer;
 
@@ -141,6 +142,92 @@ describe("Given a DELETE /news/archived/:id enpoint", () => {
       } = await request(app).delete(`/news/archived/${idToDelete}`).expect(404);
 
       expect(msg).toBe(expectedMsg);
+    });
+  });
+});
+
+describe("Given a POST /news/create endpoint", () => {
+  describe("When it receives a request with a new with existing author", () => {
+    test("Then it should respond with 201 status code and json with the createdNew", async () => {
+      const createdAuthor = await Author.create({ authorName: "Test Author" });
+
+      const newToCreateData = {
+        title: mockNews[0].title,
+        description: mockNews[0].description,
+        content: mockNews[0].content,
+        author: createdAuthor.id,
+      };
+
+      const expectedJson = {
+        createdNew: {
+          ...newToCreateData,
+          archived: false,
+          author: {
+            authorName: createdAuthor.authorName,
+            id: createdAuthor.id,
+          },
+        },
+      };
+
+      const {
+        body: { createdNew },
+      } = await request(app)
+        .post("/news/create")
+        .send(newToCreateData)
+        .expect(201);
+
+      expectedJson.createdNew.storageDate = createdNew.storageDate;
+
+      expectedJson.createdNew.id = createdNew.id;
+
+      expect(createdNew).toEqual(expectedJson.createdNew);
+    });
+  });
+
+  describe("When it receives a request with a new with a NON existing author objectId", () => {
+    test("Then it should respond with 201 status code and json with the createdNew with author  '639277516361cd4071a3346b'", async () => {
+      const expectedDefaultAuthorId = "639277516361cd4071a3346b";
+
+      const newToCreateData = {
+        title: mockNews[0].title,
+        description: mockNews[0].description,
+        content: mockNews[0].content,
+        author: "638c7ab09697e7ea8b97edba",
+      };
+
+      const expectedJson = {
+        createdNew: {
+          ...newToCreateData,
+          archived: false,
+          author: expectedDefaultAuthorId,
+        },
+      };
+
+      const {
+        body: { createdNew },
+      } = await request(app)
+        .post("/news/create")
+        .send(newToCreateData)
+        .expect(201);
+
+      expectedJson.createdNew.storageDate = createdNew.storageDate;
+
+      expectedJson.createdNew.id = createdNew.id;
+
+      expect(createdNew).toEqual(expectedJson.createdNew);
+    });
+  });
+
+  describe("When it receives a request with a author value that is not objectId", () => {
+    test("Then it should respond with 400 status code", async () => {
+      const newToCreateData = {
+        title: mockNews[0].title,
+        description: mockNews[0].description,
+        content: mockNews[0].content,
+        author: "not a object id",
+      };
+
+      await request(app).post("/news/create").send(newToCreateData).expect(400);
     });
   });
 });
