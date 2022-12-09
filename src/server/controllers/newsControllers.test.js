@@ -219,9 +219,7 @@ describe("Given a createNew function", () => {
         createdNew: {
           ...mockCreateNewBody,
           id: mockId,
-          author: {
-            authorName: "Unknown",
-          },
+          author: "639277516361cd4071a3346b",
         },
       };
       const expectedStatus = 201;
