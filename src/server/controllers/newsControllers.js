@@ -75,10 +75,18 @@ const createNew = async (req, res, next) => {
   try {
     const newData = req.body;
 
+    const authorData = await Author.findById(newData.author);
+
     const createdNew = await New.create({
       ...newData,
+      archived: false,
       storageDate: Date.now(),
+      author: authorData?.id ?? "639277516361cd4071a3346b",
     });
+
+    createdNew.author = authorData ?? {
+      authorName: "Unknown",
+    };
 
     debug(chalk.red(createdNew));
 

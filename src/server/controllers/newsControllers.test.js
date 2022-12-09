@@ -2,6 +2,7 @@ const {
   mockNews,
   mockCreateNewBody,
 } = require("../../database/mocks/mockNews");
+const Author = require("../../database/models/Author");
 const New = require("../../database/models/New");
 const {
   getNews,
@@ -180,7 +181,7 @@ describe("Given a deleteNew function", () => {
 });
 
 describe("Given a createNew function", () => {
-  describe("When it's called with a request with valid new object", () => {
+  describe("When it's called with a request with valid new object with existing author id", () => {
     test("Then it should call the response's method status with a 201, and json method with object with the created new", async () => {
       const req = {
         body: mockCreateNewBody,
@@ -191,9 +192,47 @@ describe("Given a createNew function", () => {
       };
       const expectedStatus = 201;
 
+      Author.findById = jest.fn().mockResolvedValue(mockCreateNewBody.author);
+
       New.create = jest
         .fn()
         .mockResolvedValue({ ...mockCreateNewBody, id: mockId });
+      await createNew(req, res, null);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+      expect(res.json).toHaveBeenCalledWith(expectedJson);
+    });
+  });
+
+  describe("When it's called with a request with valid new object with non existing id", () => {
+    test("Then it should call the response's method status with a 201, and json method with object with the created new", async () => {
+      const mockCreateNewBodyWrongAuthor = {
+        ...mockCreateNewBody,
+        author: "no existent author",
+      };
+      const req = {
+        body: mockCreateNewBodyWrongAuthor,
+      };
+      const mockId = "thisIsAMockId";
+
+      const expectedJson = {
+        createdNew: {
+          ...mockCreateNewBody,
+          id: mockId,
+          author: {
+            authorName: "Unknown",
+          },
+        },
+      };
+      const expectedStatus = 201;
+
+      Author.findById = jest.fn().mockResolvedValue(null);
+
+      New.create = jest.fn().mockResolvedValue({
+        ...mockCreateNewBody,
+        id: mockId,
+        author: "639277516361cd4071a3346b",
+      });
       await createNew(req, res, null);
 
       expect(res.status).toHaveBeenCalledWith(expectedStatus);
